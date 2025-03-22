@@ -76,13 +76,19 @@
 
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF();
-
+        let yOffset = 10; 
         qrData.forEach((data, index) => {
           const imgData = data.div
             .querySelector("canvas")
             .toDataURL("image/png");
-          pdf.addImage(imgData, "PNG", 10, 10 + index * 40, 30, 30);
-          if ((index + 1) % 5 === 0) pdf.addPage();
+          pdf.addImage(imgData, "PNG", 10,  yOffset, 30, 30);
+
+          yOffset += 40;
+          
+          if ((index + 1) % 6 === 0 && index + 1 !== qrData.length){
+            pdf.addPage();
+            yOffset = 10; 
+        }
         });
 
         pdf.save("QR_Codes.pdf");
